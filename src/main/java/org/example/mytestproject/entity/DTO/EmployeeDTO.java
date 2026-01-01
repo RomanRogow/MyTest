@@ -1,38 +1,54 @@
 package org.example.mytestproject.entity.DTO;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true) // ВАЖНО!
 public class EmployeeDTO {
 
+    @JsonProperty("id")
     private Long id;
 
-    @Pattern(regexp = "^[A-Z0-9-]{3,20}$", message = "Табельный номер должен содержать только буквы, цифры и дефисы")
-    @Nullable
+    @JsonProperty("personalCode")
     private String personalCode;
 
-    @NotBlank(message = "Имя обязательно")
-    @Size(min = 1, max = 50, message = "Имя должно быть от 1 до 50 символов")
+    @JsonProperty("firstName")
     private String firstName;
 
-    @NotBlank(message = "Фамилия обязательна")
-    @Size(min = 1, max = 50, message = "Фамилия должна быть от 1 до 50 символов")
+    @JsonProperty("lastName")
     private String lastName;
 
-    @NotBlank(message = "Отдел обязателен")
+    @JsonProperty("department")
     private String department;
 
-    @NotNull(message = "Возраст обязателен")
-    @Min(value = 18, message = "Возраст должен быть не менее 18 лет")
-    @Max(value = 100, message = "Возраст должен быть не более 100 лет")
+    @JsonProperty("age")
     private Integer age;
 
+    @JsonProperty("post")
     private String post;
 
-    @NotBlank(message = "Время создания")
-    private LocalDateTime createdAt;
+    @JsonProperty("qrCodeBase64")
+    private String qrCodeBase64;
+
+    // Добавьте остальные поля из Entity если нужно
+    @JsonProperty("qrCodeData")
+    private String qrCodeData;
+
+    @JsonProperty("createdAt")
+    private java.time.LocalDateTime createdAt;
+
+    @JsonProperty("updatedAt")
+    private java.time.LocalDateTime updatedAt;
+
+    @JsonProperty("syncedToKafka")
+    private Boolean syncedToKafka;
+
+    @JsonProperty("kafkaSyncDate")
+    private java.time.LocalDateTime kafkaSyncDate;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

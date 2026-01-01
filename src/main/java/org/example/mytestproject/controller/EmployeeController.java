@@ -88,7 +88,6 @@ public class EmployeeController {
         dto.setAge(employee.getAge());
         dto.setDepartment(employee.getDepartment());
         dto.setPost((employee.getPost() == null) ? "" : employee.getPost());
-        dto.setCreatedAt(employee.getCreateAt() == null ? null : employee.getCreateAt());
         return dto;
     }
 }

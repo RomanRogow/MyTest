@@ -1,38 +1,36 @@
 spring:
-  # Ваши существующие настройки...
+  application:
+    name: mytestproject
+
   datasource:
     url: jdbc:postgresql://localhost:5432/test_db
     username: postgres
     password: postgres
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 
-  # Kafka - простейшая конфигурация
   kafka:
     bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    consumer:
-      group-id: ${spring.application.name}-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      auto-offset-reset: earliest
+    # ОСТАВЬТЕ ПУСТЫМ - все настройки в KafkaConfig
 
-# Приложение
+  liquibase:
+    enabled: true
+    change-log: "classpath:/db/changelog/db.changelog-master.xml"
+    contexts: "default"
+    default-schema: "public"
+    liquibase-schema: "public"
+
 app:
   kafka:
     enabled: true
     topic:
-      employee-sync: employee-sync-topic  # Единственный топик для начала
-  service:
-    name: ${spring.application.name}
+      employee-bulk-sync: employee-bulk-sync
 
-server:
-  error:
-    include-message: always
-    include-binding-errors: never
-    include-stacktrace: never
-    include-exception: false
+logging:
+  level:
+    org.springframework.kafka: INFO
+    org.apache.kafka: WARN
+    org.example.mytestproject: DEBUG
