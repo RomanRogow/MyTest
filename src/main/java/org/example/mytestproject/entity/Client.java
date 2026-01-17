@@ -15,12 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "clients")
-@NamedEntityGraph(
-        name = "graph_clients_payments",
-        attributeNodes = {
-                @NamedAttributeNode("payments")
-        }
-)
+//@NamedEntityGraph(
+//        name = "graph_clients_payments",
+//        attributeNodes = {
+//                @NamedAttributeNode("payments")
+//        }
+//)
 public class Client {
 
     @Id

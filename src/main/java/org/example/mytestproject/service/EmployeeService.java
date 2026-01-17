@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.mytestproject.entity.Employee;
+import org.example.mytestproject.entity.EmployeeMongo;
 import org.example.mytestproject.exceptions.EmployeeNotFoundException;
 import org.example.mytestproject.repository.EmployeeRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class EmployeeService {
 
     private final EmployeeRepository repository;
+    private final MongoTemplate mongoTemplate;
 
     public List<Employee> findAllByFirstName(String firstName) {
 
@@ -68,7 +71,11 @@ public class EmployeeService {
             );
         }
         log.info("Создание нового сотрудника: {}", employee);
-        return repository.save(employee);
+        Employee savedEmployee = repository.save(employee);
+
+        this.saveToMongoAudit(savedEmployee, "CREATE");
+
+        return savedEmployee;
     }
 
     @Transactional
@@ -86,6 +93,8 @@ public class EmployeeService {
         if (employee == null) {
             throw new EmployeeNotFoundException("Данный ID не найден.");
         }
+        saveToMongoAudit(employee, "DELETE");
+
         repository.delete(employee);
     }
 
@@ -114,11 +123,26 @@ public class EmployeeService {
         }
         existingEmployee.setPost(updatedEmployee.getPost());
 
-        return repository.save(existingEmployee);
+        this.saveToMongoAudit(existingEmployee, "UPDATE");
+
+        repository.save(existingEmployee);
+
+        return existingEmployee;
     }
 
     public long employeeCount() {
         return repository.count();
     }
 
+
+    private void saveToMongoAudit(Employee employee, String action) {
+        EmployeeMongo employeeMongo = new EmployeeMongo();
+        employeeMongo.setPostgresId(employee.getId());
+        employeeMongo.setFirstName(employee.getFirstName());
+        employeeMongo.setLastName(employee.getLastName());
+        employeeMongo.setAge(employee.getAge());
+        employeeMongo.setAction(action);
+
+        mongoTemplate.save(employeeMongo);
+    }
 }

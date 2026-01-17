@@ -12,6 +12,18 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  # MongoDB настройки
+  data:
+    mongodb:
+      uri: mongodb://admin:admin123@localhost:27017/employeedb?authSource=admin
+      # или отдельными параметрами:
+      # host: localhost
+      # port: 27017
+      # database: employeedb
+      # username: admin
+      # password: admin123
+      # authentication-database: admin
+
   kafka:
     bootstrap-servers: localhost:9092
     # ОСТАВЬТЕ ПУСТЫМ - все настройки в KafkaConfig
@@ -34,3 +46,5 @@ logging:
     org.springframework.kafka: INFO
     org.apache.kafka: WARN
     org.example.mytestproject: DEBUG
+    org.springframework.data.mongodb: DEBUG
+    org.mongodb.driver: INFO
