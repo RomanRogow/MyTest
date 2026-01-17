@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true) // ВАЖНО!
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeDTO {
 
     @JsonProperty("id")
@@ -32,7 +32,6 @@ public class EmployeeDTO {
     @JsonProperty("qrCodeBase64")
     private String qrCodeBase64;
 
-    // Добавьте остальные поля из Entity если нужно
     @JsonProperty("qrCodeData")
     private String qrCodeData;
 
