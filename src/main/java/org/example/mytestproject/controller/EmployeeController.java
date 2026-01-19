@@ -22,20 +22,12 @@ public class EmployeeController {
 
     @GetMapping("/by-name")
     public List<EmployeeDTO> getEmployeesByName(@RequestParam String firstName) {
-        List<Employee> emp = service.findAllByFirstName(firstName);
-
-        return emp.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return service.findAllByFirstName(firstName);
     }
 
     @GetMapping
     public List<EmployeeDTO> getAllEmployees() {
-        List<Employee> emp = service.findAll();
-
-        return emp.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return service.findAllToDTO();
     }
 
     @GetMapping("/{id}")
@@ -79,15 +71,4 @@ public class EmployeeController {
         return ResponseEntity.ok(emp);
     }
 
-    // Вспомогательный метод: Entity -> DTO
-    private EmployeeDTO convertToDTO(Employee employee) {
-        EmployeeDTO dto = new EmployeeDTO();
-        dto.setId(employee.getId());
-        dto.setFirstName(employee.getFirstName());
-        dto.setLastName(employee.getLastName());
-        dto.setAge(employee.getAge());
-        dto.setDepartment(employee.getDepartment());
-        dto.setPost((employee.getPost() == null) ? "" : employee.getPost());
-        return dto;
-    }
 }

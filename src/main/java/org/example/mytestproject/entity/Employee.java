@@ -31,7 +31,6 @@ public class Employee {
     @Column(name = "post")
     private String post;
 
-    // Добавьте поля из DTO если нужно
     @Column(name = "personal_code", unique = true)
     private String personalCode;
 

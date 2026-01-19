@@ -1,6 +1,7 @@
 package org.example.mytestproject.repository;
 
 import org.example.mytestproject.entity.Client;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

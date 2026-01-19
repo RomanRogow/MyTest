@@ -3,6 +3,7 @@ package org.example.mytestproject.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.mytestproject.entity.DTO.EmployeeDTO;
 import org.example.mytestproject.entity.Employee;
 import org.example.mytestproject.entity.EmployeeMongo;
 import org.example.mytestproject.exceptions.EmployeeNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,7 +23,7 @@ public class EmployeeService {
     private final EmployeeRepository repository;
     private final MongoTemplate mongoTemplate;
 
-    public List<Employee> findAllByFirstName(String firstName) {
+    public List<EmployeeDTO> findAllByFirstName(String firstName) {
 
         List<Employee> employees = repository.findByFirstName(firstName);
         if (employees.isEmpty()) {
@@ -29,11 +31,17 @@ public class EmployeeService {
                     "Сотрудники с именем " + firstName + " отсутствуют"
             );
         }
-        return employees;
+        return employees.stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.toList());
     }
 
-    public List<Employee> findAll() {
-        return repository.findAll();
+    public List<EmployeeDTO> findAllToDTO() {
+        List<Employee> emp = repository.findAll();
+
+        return emp.stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Employee findById(Long id) {

@@ -3,6 +3,7 @@ package org.example.mytestproject.entity.DTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.example.mytestproject.entity.Employee;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -49,5 +50,14 @@ public class EmployeeDTO {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public EmployeeDTO(Employee employee) {
+        this.id = employee.getId();
+        this.firstName = employee.getFirstName();
+        this.lastName = employee.getLastName();
+        this.age = employee.getAge();
+        this.department = employee.getDepartment();
+        this.post = employee.getPost() == null ? "" : employee.getPost();
     }
 }

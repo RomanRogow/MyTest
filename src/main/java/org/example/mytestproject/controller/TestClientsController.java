@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/testClients")
 public class TestClientsController {
 
-    private final ClientRepository ClientRepository;
     private final ClientRepository clientRepository;
 
     @GetMapping("/getAllJoin")
